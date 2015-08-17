@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Spree::PaymentsController do
+  routes { Spree::Core::Engine.routes }
+
   before do
     allow(controller).to receive(:authenticate_spree_user!).and_return(true)
     @user = mock_model(Spree::User, :generate_spree_api_key! => false, :last_incomplete_spree_order => nil)
@@ -48,7 +50,7 @@ describe Spree::PaymentsController do
     end
 
     def send_request
-      patch :update, :id => 'payment_id', :payment => { :bank_name => 'bank_name', :account_no => "account_no", :transaction_reference_no => "transaction_reference_no" }, :use_route => 'spree'
+      patch :update, :id => 'payment_id', :payment => { :bank_name => 'bank_name', :account_no => "account_no", :transaction_reference_no => "transaction_reference_no" }
     end
 
     it_behaves_like "request which finds payment"

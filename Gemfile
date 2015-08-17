@@ -13,9 +13,10 @@ end
 group :test do
   gem 'test-unit'
   gem 'minitest'
-  gem 'rspec-rails', '~> 2.14'
-  gem 'shoulda-matchers', '2.2.0'
+  gem 'rspec-rails', '~> 3.3.3'
+  gem 'shoulda-matchers', '2.8.0'
   gem 'simplecov', :require => false
   gem 'database_cleaner'
+  gem 'rspec-activemodel-mocks'
 end
 gemspec

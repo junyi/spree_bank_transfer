@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe Spree::Admin::BanksController do
+  routes { Spree::Core::Engine.routes }
 
   let(:role) { Spree::Role.create!(:name => 'user') }
   let(:roles) { [role] }
 
   before(:each) do
     @user = mock_model(Spree::User, :generate_spree_api_key! => false)
-    @user.stub_chain(:roles, :includes).and_return([])
+    allow(@user).to receive_message_chain(:roles, :includes).and_return([])
     allow(@user).to receive(:has_spree_role?).with('admin').and_return(true)
     allow(controller).to receive(:spree_user_signed_in?).and_return(true)
     allow(controller).to receive(:spree_current_user).and_return(@user)
@@ -24,7 +25,7 @@ describe Spree::Admin::BanksController do
     end
 
     def send_request
-      get :index, :use_route => 'spree'
+      get :index
     end
 
     it "assigns @banks" do
@@ -50,7 +51,7 @@ describe Spree::Admin::BanksController do
     end
 
     def send_request
-      put :toggle_activation, :id => "1", :use_route => 'spree', :format => :js
+      put :toggle_activation, :id => "1", :format => :js
     end
 
     it "toggles activation status of bank" do

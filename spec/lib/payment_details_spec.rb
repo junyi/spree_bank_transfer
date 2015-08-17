@@ -61,7 +61,7 @@ describe PaymentDetails do
       context 'when payment attributes not updated successfully' do
         before do
           allow(@payment).to receive(:update_attributes).and_return(false)
-          @payment.stub_chain(:errors, :full_messages).and_return(["some error occurred"])
+          allow(@payment).to receive_message_chain(:errors, :full_messages).and_return(["some error occurred"])
         end
 
         it 'sets errors' do
