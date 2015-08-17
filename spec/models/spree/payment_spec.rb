@@ -6,16 +6,16 @@ describe Spree::Payment do
       subject.validate_bank_details = true
     end
 
-    it { should validate_presence_of(:bank_name) }
-    it { should validate_presence_of(:account_no) }
-    it { should validate_presence_of(:transaction_reference_no) }
-    it { should validate_presence_of(:deposited_on) }
+    it { is_expected.to validate_presence_of(:bank_name) }
+    it { is_expected.to validate_presence_of(:account_no) }
+    it { is_expected.to validate_presence_of(:transaction_reference_no) }
+    it { is_expected.to validate_presence_of(:deposited_on) }
   end
 
   context 'when validate_bank_details not true' do
-    it { should_not validate_presence_of(:bank_name) }
-    it { should_not validate_presence_of(:account_no) }
-    it { should_not validate_presence_of(:transaction_reference_no) }
+    it { is_expected.not_to validate_presence_of(:bank_name) }
+    it { is_expected.not_to validate_presence_of(:account_no) }
+    it { is_expected.not_to validate_presence_of(:transaction_reference_no) }
   end
 
   describe ".from_bank_transfer" do
@@ -53,7 +53,7 @@ describe Spree::Payment do
     end
 
     it "returns payments with payment method as bank_transfer" do
-      Spree::Payment.from_bank_transfer.should =~ [@bank_transfer_payment1, @bank_transfer_payment2]
+      expect(Spree::Payment.from_bank_transfer).to match_array([@bank_transfer_payment1, @bank_transfer_payment2])
     end
   end
 
@@ -68,13 +68,13 @@ describe Spree::Payment do
       end
 
       it 'is true' do
-        @payment.details_submitted?.should be_true
+        expect(@payment.details_submitted?).to be_truthy
       end
     end
 
     context 'when transaction_reference_no not present' do
       it 'is false' do
-        @payment.details_submitted?.should be_false
+        expect(@payment.details_submitted?).to be_falsey
       end
     end
   end
