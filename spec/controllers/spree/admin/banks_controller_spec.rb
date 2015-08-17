@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Spree::Admin::BanksController do
+  routes { Spree::Core::Engine.routes }
 
   let(:role) { Spree::Role.create!(:name => 'user') }
   let(:roles) { [role] }
@@ -9,27 +10,27 @@ describe Spree::Admin::BanksController do
     @user = mock_model(Spree::User, :generate_spree_api_key! => false)
     @user.stub_chain(:roles, :includes).and_return([])
     @user.stub(:has_spree_role?).with('admin').and_return(true)
-    controller.stub(:spree_user_signed_in?).and_return(true)
-    controller.stub(:spree_current_user).and_return(@user)
+    allow_any_instance_of(Spree::Admin::BanksController).to receive(:spree_user_signed_in?).and_return(true)
+    allow_any_instance_of(Spree::Admin::BanksController).to receive(:spree_current_user).and_return(@user)
     @user.stub(:roles).and_return(roles)
     roles.stub(:includes).with(:permissions).and_return(roles)
-    controller.stub(:authorize_admin).and_return(true)
-    controller.stub(:authorize!).and_return(true)
+    allow_any_instance_of(Spree::Admin::BanksController).to receive(:authorize_admin).and_return(true)
+    allow_any_instance_of(Spree::Admin::BanksController).to receive(:authorize!).and_return(true)
   end
 
   describe "GET index" do
     before(:each) do
       @bank1 = mock_model(Spree::Bank)
-      Spree::Bank.stub(:page).and_return([@bank1])
+      allow_any_instance_of(Spree::Bank).to receive(:page).and_return([@bank1])
     end
 
     def send_request
-      get :index, :use_route => 'spree'
+      get :index
     end
 
     it "assigns @banks" do
       send_request
-      assigns(:banks).should eq([@bank1])
+      expect(assigns(:banks)).to eq([@bank1])
     end
 
     it "paginates banks" do

@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'spree', github: 'spree/spree'
 gem 'spree_auth_devise', github: 'spree/spree_auth_devise'
 gem 'mysql2'
+gem 'jquery-ui-rails'
 
 group :assets do
   gem 'coffee-rails', '~> 4.0.0'
@@ -11,8 +12,10 @@ group :assets do
 end
 
 group :test do
+  gem 'test-unit'
   gem 'minitest'
   gem 'rspec-rails', '~> 3.3'
+  gem 'rspec-activemodel-mocks'
   gem 'shoulda-matchers', '2.2.0'
   gem 'simplecov', :require => false
   gem 'database_cleaner'

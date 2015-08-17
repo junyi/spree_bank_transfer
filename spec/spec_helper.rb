@@ -41,7 +41,7 @@ RSpec.configure do |config|
   # visit spree.admin_path
   # current_path.should eql(spree.products_path)
   config.include Spree::TestingSupport::UrlHelpers
-
+  
   # == Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -51,6 +51,23 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.mock_with :rspec
   config.color = true
+
+  # Automatically infer spec type from file location
+  # http://stackoverflow.com/questions/6296235/undefined-method-get-for-rspeccoreexamplegroupnested-10x00000106db51f
+  config.infer_spec_type_from_file_location!
+
+  # Test helpers for devise
+  # https://github.com/plataformatec/devise#test-helpers
+  config.include Devise::TestHelpers, type: :controller
+
+  # Deprecation warning for should
+  # https://relishapp.com/rspec/rspec-expectations/docs/syntax-configuration
+  # config.expect_with :rspec do |c|
+  #   c.syntax = :should
+  # end
+  # config.mock_with :rspec do |c|
+  #   c.syntax = :should
+  # end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -67,7 +84,7 @@ RSpec.configure do |config|
   end
 
   # Before each spec check if it is a Javascript test and switch between using database transactions or not where necessary.
-  config.before :each do
+  config.before :each do |example|
     DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
     DatabaseCleaner.start
   end
